@@ -1,0 +1,32 @@
+Ver 3.3.0-7 September 2021
+- Fix error on article summary when using subscription
+
+Ver 3.3 9 Februari 2021
+Compatible with OJS 3.3.X
+
+Ver 3.2 27 April 2020
+- Fix search result error
+
+Ver 3.1 March 2020
+Compatible with OJS 3.2xx
+Fix Responsiveness 
+Make minor style modification
+Fix Index Site journal name
+
+
+ver 3.2 25 Mei 2019
+Fix Google Scholar Indexing Bug Thank to Mohammad Rizki Fadhil Pratama
+
+
+Ver 2.0 10 Mei 2019
+Make compatible with OJS 3.1.2
+Fix Dropdown menu color and background
+Fix Archive Issue
+
+
+ver 1.1 2019/03/17
+
+Remove the sidebar on the article detail
+Styling the typography on the article detail 
+Add new template file -> article.tpl
+Add style to the panel on the article detail
