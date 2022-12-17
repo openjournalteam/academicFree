@@ -28,6 +28,46 @@ class AcademicFreeThemePlugin extends ThemePlugin
         $this->pluginDir = $this->getPluginPath();
     }
 
+    function register($category, $path, $mainContextId = null)
+    {
+        if (!parent::register($category, $path, $mainContextId)) return false;
+
+        // Don't perform any futher operations if theme is not currently active
+        if (!$this->isActive()) {
+            return true;
+        }
+        HookRegistry::register('TemplateManager::display', array($this, 'loadTemplateData'));
+        HookRegistry::register('TemplateManager::display', [$this, 'addHeaderMeta']);
+
+        return true;
+    }
+
+    public function addHeaderMeta($hookName, $args)
+    {
+        $templateMgr            = &$args[0];
+        $templateMgr->addHeader(
+            $this->getName(),
+            '<meta name="' . $this->getName() . '" content="' . $this->getDisplayName() . ' Version ' . $this->getPluginVersion() . ' by openjournaltheme.com">',
+            [
+                'contexts' => ['frontend'],
+            ]
+        );
+    }
+
+    public function getPluginVersion()
+    {
+        import('lib.pkp.classes.site.VersionCheck');
+        $version = VersionCheck::parseVersionXML($this->getPluginVersionFile());
+
+        return $version['release'];
+    }
+
+    public function getPluginVersionFile()
+    {
+        return $this->getPluginPath() . '/version.xml';
+    }
+
+
     /**
      * Initialize the theme
      *
@@ -36,7 +76,6 @@ class AcademicFreeThemePlugin extends ThemePlugin
     public function init()
     {
 
-        HookRegistry::register('TemplateManager::display', array($this, 'loadTemplateData'));
 
         // Register option for bootstrap themes
         $this->addOption('bootstrapTheme', 'radio', array(
@@ -229,7 +268,7 @@ class AcademicFreeThemePlugin extends ThemePlugin
      */
     public function getDisplayName()
     {
-        return __('plugins.themes.academic_free.name');
+        return 'Academic Free Theme';
     }
 
     /**
