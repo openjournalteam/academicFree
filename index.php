@@ -21,6 +21,4 @@
 
 require_once('AcademicFreeThemePlugin.inc.php');
 
-return new AcademicFreeThemePlugin();
-
-?>
+return new APP\plugins\themes\academicFree\AcademicFreeThemePlugin();

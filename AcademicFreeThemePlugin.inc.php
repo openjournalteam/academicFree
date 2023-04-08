@@ -17,8 +17,16 @@
  * @brief Default theme
  */
 
-import('lib.pkp.classes.plugins.ThemePlugin');
-class AcademicFreeThemePlugin extends ThemePlugin
+namespace APP\plugins\themes\academicFree;
+
+use APP\core\Application;
+use PKP\config\Config;
+use PKP\db\DAORegistry;
+use PKP\facades\Locale;
+use PKP\plugins\Hook;
+use PKP\site\VersionCheck;
+
+class AcademicFreeThemePlugin extends \PKP\plugins\ThemePlugin
 {
 
     public $pluginDir;
@@ -36,8 +44,9 @@ class AcademicFreeThemePlugin extends ThemePlugin
         if (!$this->isActive()) {
             return true;
         }
-        HookRegistry::register('TemplateManager::display', array($this, 'loadTemplateData'));
-        HookRegistry::register('TemplateManager::display', [$this, 'addHeaderMeta']);
+
+        Hook::add('TemplateManager::display', array($this, 'loadTemplateData'));
+        Hook::add('TemplateManager::display', [$this, 'addHeaderMeta']);
 
         return true;
     }
@@ -108,7 +117,7 @@ class AcademicFreeThemePlugin extends ThemePlugin
             'options'     => [
                 [
                     'value' => true,
-                    'label' => __('plugins.themes.academic_pro.enable'),
+                    'label' => __('plugins.themes.academic_free.enable'),
                 ],
 
             ],
@@ -221,8 +230,8 @@ class AcademicFreeThemePlugin extends ThemePlugin
         $bootstrapTheme = $this->getOption('bootstrapTheme');
         $this->addStyle('bootstrap', 'styles/yeti.less');
 
-        $locale = AppLocale::getLocale();
-        if (AppLocale::getLocaleDirection($locale) === 'rtl') {
+        $locale = Locale::getLocale();
+        if (Locale::getMetadata($locale)->isRightToLeft()) {
             if (Config::getVar('general', 'enable_cdn')) {
                 $this->addStyle('bootstrap-rtl', '//cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css', array('baseUrl' => ''));
             } else {
@@ -256,7 +265,7 @@ class AcademicFreeThemePlugin extends ThemePlugin
         $this->addStyle('main', 'styles/academic_free.css');
         $this->addStyle('classy', 'styles/responsive.css');
 
-
+        $this->addScript('main', 'styles/academic_free.js');
 
         $headerTheme = $this->getOption('headerTheme');
         $this->addStyle('headerTheme', 'styles/header/blue.css');
