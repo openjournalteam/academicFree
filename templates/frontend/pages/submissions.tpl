@@ -24,14 +24,17 @@
 
 	{* Login/register prompt *}
 	{if $isUserLoggedIn}
-		{capture assign="newSubmission"}<a href="{url page="submission" op="wizard"}">{translate key="about.onlineSubmissions.newSubmission"}</a>{/capture}
-		{capture assign="viewSubmissions"}<a href="{url page="submissions"}">{translate key="about.onlineSubmissions.viewSubmissions"}</a>{/capture}
+		{capture assign="newSubmission"}<a
+			href="{url page="submission" op="wizard"}">{translate key="about.onlineSubmissions.newSubmission"}</a>{/capture}
+		{capture assign="viewSubmissions"}<a
+			href="{url page="submissions"}">{translate key="about.onlineSubmissions.viewSubmissions"}</a>{/capture}
 		<div class="alert alert-info">
 			{translate key="about.onlineSubmissions.submissionActions" newSubmission=$newSubmission viewSubmissions=$viewSubmissions}
 		</div>
 	{else}
 		{capture assign="login"}<a href="{url page="login"}">{translate key="about.onlineSubmissions.login"}</a>{/capture}
-		{capture assign="register"}<a href="{url page="user" op="register"}">{translate key="about.onlineSubmissions.register"}</a>{/capture}
+		{capture assign="register"}<a
+			href="{url page="user" op="register"}">{translate key="about.onlineSubmissions.register"}</a>{/capture}
 		<div class="alert alert-info">
 			{translate key="about.onlineSubmissions.registrationRequired" login=$login register=$register}
 		</div>
@@ -49,14 +52,8 @@
 			<p class="lead description">
 				{translate key="about.submissionPreparationChecklist.description"}
 			</p>
-			<ul class="list-group">
-				{foreach from=$submissionChecklist item=checklistItem}
-					<li class="list-group-item">
-						<span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-						<span class="item-content">{$checklistItem.content|nl2br}</span>
-					</li>
-				{/foreach}
-			</ul>
+			{$submissionChecklist}
+		
 
 		</div>
 	{/if}
