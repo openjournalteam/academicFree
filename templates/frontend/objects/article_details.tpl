@@ -16,8 +16,8 @@
  * @uses $pubIdPlugins @todo
  *}
 
- {assign var=smarty_version value=$smarty.version|substr:0:1}
- 
+{assign var=smarty_version value=$smarty.version|substr:0:1}
+
 <article class="article-details">
 	<header>
 		<h1 class="page-header">
@@ -25,11 +25,12 @@
 			{if $article->getLocalizedSubtitle()}
 				<small>
 					{$article->getLocalizedSubtitle()|escape}
-						{if $section} <span class="pull-right">{translate key="section.section"}	{$section->getLocalizedTitle()|escape}</span> {/if}
+					{if $section} <span class="pull-right">{translate key="section.section"}
+						{$section->getLocalizedTitle()|escape}</span> {/if}
 				</small>
 			{/if}
 
-		
+
 		</h1>
 	</header>
 
@@ -38,27 +39,32 @@
 
 		<section class="article-sidebar col-md-4">
 
-		
+
 
 			{* Screen-reader heading for easier navigation jumps *}
 			<h2 class="sr-only">{translate key="plugins.themes.academic_pro.article.sidebar"}</h2>
 
 			{* Article/Issue cover image *}
-			{if $article->getLocalizedCoverImage() || $issue->getLocalizedCoverImage()}
+			{if $publication->getLocalizedData('coverImage') || $issue->getLocalizedCoverImage()}
 				<div class="cover-image">
-					{if $article->getLocalizedCoverImage()}
-						<img class="img-responsive" src="{$article->getLocalizedCoverImageUrl()|escape}"{if $article->getLocalizedCoverImageAltText()} alt="{$article->getLocalizedCoverImageAltText()|escape}"{/if}>
+					{assign var="coverImage" value=$publication->getLocalizedData('coverImage')}
+
+					{if $coverImage}
+						<img class="img-responsive"
+							src="{$publication->getLocalizedCoverImageUrl($article->getData('contextId'))|escape}"
+							alt="{$coverImage.altText|escape|default:''}">
 					{else}
 						<a href="{url page="issue" op="view" path=$issue->getBestIssueId()}">
-							<img class="img-responsive" src="{$issue->getLocalizedCoverImageUrl()|escape}"{if $issue->getLocalizedCoverImageAltText()} alt="{$issue->getLocalizedCoverImageAltText()|escape}"{/if}>
+							<img class="img-responsive" src="{$issue->getLocalizedCoverImageUrl()|escape}"
+								{if $issue->getLocalizedCoverImageAltText()} alt="{$issue->getLocalizedCoverImageAltText()|escape}" {/if}>
 						</a>
 					{/if}
 				</div>
 			{/if}
 
-			
 
-		
+
+
 
 			<div class="list-group">
 
@@ -72,75 +78,75 @@
 
 				{* DOI (requires plugin) *}
 				{* make compatible with ojs 3.1.2 *}
-					{if $smarty_version == '2'} 
-						{include file="legacy/article_detail_doi_3.1.1.tpl"}
-					{else}
-						{include file="legacy/article_detail_doi_3.1.2.tpl"}
-					{/if}
+				{if $smarty_version == '2'}
+					{include file="legacy/article_detail_doi_3.1.1.tpl"}
+				{else}
+					{include file="legacy/article_detail_doi_3.1.2.tpl"}
+				{/if}
 				{* end compatible check *}
 			</div>
 
-			
-				{* Galleys *}
-				<div class="panel panel-default galley_list">
-						<div class="panel-heading">
-							<i class="fa fa-download"> </i> Download
-						</div>
-						<div class="panel-body">
-								{* Article Galleys *}
-								{if $primaryGalleys || $supplementaryGalleys}
-									<div class="download">
-										{if $primaryGalleys}
-											{foreach from=$primaryGalleys item=galley}
-												{include file="frontend/objects/galley_link.tpl" parent=$article purchaseFee=$currentJournal->getSetting('purchaseArticleFee') purchaseCurrency=$currentJournal->getSetting('currency')}
-											{/foreach}
-										{/if}
-										{if $supplementaryGalleys}
-											{foreach from=$supplementaryGalleys item=galley}
-												{include file="frontend/objects/galley_link.tpl" parent=$article isSupplementary="1"}
-											{/foreach}
-										{/if}
-									</div>
-								{/if}
-						</div>
-				</div>
 
-				{* Stat *}
-				{if $enableStatistic != 'no'}
-				<div class="panel panel-default galley_list">
-						<div class="panel-heading">
-							<i class="fa fa-bar-chart"> </i> Statistic
-						</div>
-						<div class="panel-body">					
-							{call_hook name="Templates::Article::Main"}
-						</div>
+			{* Galleys *}
+			<div class="panel panel-default galley_list">
+				<div class="panel-heading">
+					<i class="fa fa-download"> </i> Download
 				</div>
-				{/if}
+				<div class="panel-body">
+					{* Article Galleys *}
+					{if $primaryGalleys || $supplementaryGalleys}
+						<div class="download">
+							{if $primaryGalleys}
+								{foreach from=$primaryGalleys item=galley}
+									{include file="frontend/objects/galley_link.tpl" parent=$article purchaseFee=$currentJournal->getSetting('purchaseArticleFee') purchaseCurrency=$currentJournal->getSetting('currency')}
+								{/foreach}
+							{/if}
+							{if $supplementaryGalleys}
+								{foreach from=$supplementaryGalleys item=galley}
+									{include file="frontend/objects/galley_link.tpl" parent=$article isSupplementary="1"}
+								{/foreach}
+							{/if}
+						</div>
+					{/if}
+				</div>
+			</div>
 
-			
-		
+			{* Stat *}
+			{if $enableStatistic != 'no'}
+				<div class="panel panel-default galley_list">
+					<div class="panel-heading">
+						<i class="fa fa-bar-chart"> </i> Statistic
+					</div>
+					<div class="panel-body">
+						{call_hook name="Templates::Article::Main"}
+					</div>
+				</div>
+			{/if}
+
+
+
 
 		</section><!-- .article-sidebar -->
 
 		<div class="col-md-8">
 			<section class="article-main">
-				
+
 				{* Issue *}
-				<div class="issue_detail">			
-				<a class="title" href="{url page="issue" op="view" path=$issue->getBestIssueId($currentJournal)}">
-				{$issue->getIssueIdentification()}
-				</a>
+				<div class="issue_detail">
+					<a class="title" href="{url page="issue" op="view" path=$issue->getBestIssueId($currentJournal)}">
+						{$issue->getIssueIdentification()}
+					</a>
 				</div>
 
 
 				{* Screen-reader heading for easier navigation jumps *}
 				<h2 class="sr-only">{translate key="plugins.themes.academic_pro.article.main"}</h2>
 
-				{if $article->getAuthors()}
+				{if $publication->getData('authors')}
 					<div class="authors">
-						{foreach from=$article->getAuthors() item=author}
+						{foreach from=$publication->getData('authors') item=author}
 							<div class="author">
-							<i class="fa fa-user"> </i>
+								<i class="fa fa-user"> </i>
 								<strong>{$author->getFullName()|escape}</strong>
 								{if $author->getLocalizedAffiliation()}
 									<div class="article-author-affilitation">
@@ -148,7 +154,7 @@
 									</div>
 								{/if}
 								{if $author->getOrcid()}
-									<div class="orcid">									
+									<div class="orcid">
 										<a href="{$author->getOrcid()|escape}" target="_blank">
 											{$author->getOrcid()|escape}
 										</a>
@@ -172,7 +178,7 @@
 				{* Keywords *}
 				{* @todo keywords not yet implemented *}
 
-				
+
 
 			</section><!-- .article-main -->
 
@@ -181,10 +187,10 @@
 				{* Screen-reader heading for easier navigation jumps *}
 				<h2 class="sr-only">{translate key="plugins.themes.academic_pro.article.details"}</h2>
 
-			
+
 				{* PubIds (requires plugins) *}
 				{* make compatible with ojs 3.1.2 *}
-				{if $smarty_version == '2'} 
+				{if $smarty_version == '2'}
 					{include file="legacy/article_detail_pubs_3.1.1.tpl"}
 				{else}
 					{include file="legacy/article_detail_pubs_3.1.2.tpl"}
@@ -206,7 +212,7 @@
 				{/if}
 
 
-			
+
 
 				{* Licensing info *}
 				{if $copyright || $licenseUrl}
@@ -232,7 +238,7 @@
 
 				{* Author biographies *}
 				{assign var="hasBiographies" value=0}
-				{foreach from=$article->getAuthors() item=author}
+				{foreach from=$publication->getData('authors') item=author}
 					{if $author->getLocalizedBiography()}
 						{assign var="hasBiographies" value=$hasBiographies+1}
 					{/if}
@@ -240,7 +246,7 @@
 				{if $hasBiographies}
 					<div class="panel panel-default author-bios">
 						<div class="panel-heading">
-							
+
 							{if $hasBiographies > 1}
 								<i class="fa fa-users"> </i>{translate key="submission.authorBiographies"}
 							{else}
@@ -248,14 +254,15 @@
 							{/if}
 						</div>
 						<div class="panel-body">
-							{foreach from=$article->getAuthors() item=author}
+							{foreach from=$publication->getData('authors') item=author}
 								{if $author->getLocalizedBiography()}
 									<div class="media biography">
 										<div class="media-body">
 											<h3 class="media-heading biography-author">
 												{if $author->getLocalizedAffiliation()}
 													{capture assign="authorName"}{$author->getFullName()|escape}{/capture}
-													{capture assign="authorAffiliation"}<span class="affiliation">{$author->getLocalizedAffiliation()|escape}</span>{/capture}
+													{capture assign="authorAffiliation"}<span
+														class="affiliation">{$author->getLocalizedAffiliation()|escape}</span>{/capture}
 													{translate key="submission.authorWithAffiliation" name=$authorName affiliation=$authorAffiliation}
 												{else}
 													{$author->getFullName()|escape}
@@ -270,35 +277,34 @@
 					</div>
 				{/if}
 
-					{* How to cite *}
+				{* How to cite *}
 				{if $citation}
 					<div class="panel panel-default how-to-cite">
 						<div class="panel-heading">
-							<i class="fa fa-file-text"> </i>  {translate key="submission.howToCite"}
+							<i class="fa fa-file-text"> </i> {translate key="submission.howToCite"}
 						</div>
 						<div class="panel-body">
 							<div id="citationOutput" role="region" aria-live="polite">
 								{$citation}
 							</div>
 							<div class="btn-group">
-							  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-controls="cslCitationFormats">
-							    {translate key="submission.howToCite.citationFormats"}
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+									aria-controls="cslCitationFormats">
+									{translate key="submission.howToCite.citationFormats"}
 									<span class="caret"></span>
-							  </button>
-							  <ul class="dropdown-menu" role="menu">
+								</button>
+								<ul class="dropdown-menu" role="menu">
 									{foreach from=$citationStyles item="citationStyle"}
 										<li>
-											<a
-												aria-controls="citationOutput"
+											<a aria-controls="citationOutput"
 												href="{url page="citationstylelanguage" op="get" path=$citationStyle.id params=$citationArgs}"
 												data-load-citation
-												data-json-href="{url page="citationstylelanguage" op="get" path=$citationStyle.id params=$citationArgsJson}"
-											>
+												data-json-href="{url page="citationstylelanguage" op="get" path=$citationStyle.id params=$citationArgsJson}">
 												{$citationStyle.title|escape}
 											</a>
 										</li>
 									{/foreach}
-							  </ul>
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -312,15 +318,16 @@
 					<div class="article-references">
 						<h2><i class="fa fa-bookmark-o text-primary"> </i> {translate key="submission.citations"}</h2>
 						<div class="article-references-content">
-							 <ol>
-							{if $parsedCitations}
-							{foreach from=$parsedCitations item="parsedCitation"}
-								<li>{$parsedCitation->getCitationWithLinks()|strip_unsafe_html} {call_hook name="Templates::Article::Details::Reference" citation=$parsedCitation}</li>
-							{/foreach}
-							{else}
-							{$publication->getData('citationsRaw')|escape|nl2br}
-							{/if}
-						 </ol>
+							<ol>
+								{if $parsedCitations}
+									{foreach from=$parsedCitations item="parsedCitation"}
+										<li>{$parsedCitation->getCitationWithLinks()|strip_unsafe_html}
+											{call_hook name="Templates::Article::Details::Reference" citation=$parsedCitation}</li>
+									{/foreach}
+								{else}
+									{$publication->getData('citationsRaw')|escape|nl2br}
+								{/if}
+							</ol>
 						</div>
 					</div>
 				{/if}

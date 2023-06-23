@@ -17,7 +17,16 @@
  * @brief Default theme
  */
 
-import('lib.pkp.classes.plugins.ThemePlugin');
+namespace APP\plugins\generic\ojtControlPanel\modules\academicFree;
+
+use APP\template\TemplateManager;
+use PKP\config\Config;
+use PKP\db\DAORegistry;
+use PKP\facades\Locale;
+use PKP\plugins\Hook;
+use PKP\plugins\ThemePlugin;
+use PKP\site\VersionCheck;
+
 class AcademicFreeThemePlugin extends ThemePlugin
 {
 
@@ -36,8 +45,8 @@ class AcademicFreeThemePlugin extends ThemePlugin
         if (!$this->isActive()) {
             return true;
         }
-        HookRegistry::register('TemplateManager::display', array($this, 'loadTemplateData'));
-        HookRegistry::register('TemplateManager::display', [$this, 'addHeaderMeta']);
+        Hook::add('TemplateManager::display', array($this, 'loadTemplateData'));
+        Hook::add('TemplateManager::display', [$this, 'addHeaderMeta']);
 
         return true;
     }
@@ -219,10 +228,10 @@ class AcademicFreeThemePlugin extends ThemePlugin
 
         // default style is paper
         $bootstrapTheme = $this->getOption('bootstrapTheme');
-        $this->addStyle('bootstrap', 'styles/yeti.less');
+        $this->addStyle('bootstrap', 'styles/yeti.less', ['baseUrl' => $this->getRequest()->getBaseUrl() . '/' . $this->getPluginPath()]);
 
-        $locale = AppLocale::getLocale();
-        if (AppLocale::getLocaleDirection($locale) === 'rtl') {
+        $locale = Locale::getLocale();
+        if (Locale::getMetadata($locale)?->isRightToLeft()) {
             if (Config::getVar('general', 'enable_cdn')) {
                 $this->addStyle('bootstrap-rtl', '//cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css', array('baseUrl' => ''));
             } else {
@@ -232,19 +241,15 @@ class AcademicFreeThemePlugin extends ThemePlugin
 
         // Load jQuery from a CDN or, if CDNs are disabled, from a local copy.
         $min     = Config::getVar('general', 'enable_minified') ? '.min' : '';
-        $request =  Application::get()->getRequest();
-        if (Config::getVar('general', 'enable_cdn')) {
-            $jquery   = '//ajax.googleapis.com/ajax/libs/jquery/' . CDN_JQUERY_VERSION . '/jquery' . $min . '.js';
-            $jqueryUI = '//ajax.googleapis.com/ajax/libs/jqueryui/' . CDN_JQUERY_UI_VERSION . '/jquery-ui' . $min . '.js';
-        } else {
-            // Use OJS's built-in jQuery files
-            $jquery   = $request->getBaseUrl() . '/lib/pkp/lib/vendor/components/jquery/jquery' . $min . '.js';
-            $jqueryUI = $request->getBaseUrl() . '/lib/pkp/lib/vendor/components/jqueryui/jquery-ui' . $min . '.js';
-        }
+        $request = $this->getRequest();
+
+        // Use OJS's built-in jQuery files
+        $jquery   = $request->getBaseUrl() . '/lib/pkp/lib/vendor/components/jquery/jquery' . $min . '.js';
+        $jqueryUI = $request->getBaseUrl() . '/lib/pkp/lib/vendor/components/jqueryui/jquery-ui' . $min . '.js';
         // Use an empty `baseUrl` argument to prevent the theme from looking for
         // the files within the theme directory
-        $this->addScript('jQuery', $jquery, array('baseUrl' => ''));
-        $this->addScript('jQueryUI', $jqueryUI, array('baseUrl' => ''));
+        $this->addScript('jQuery', $jquery, ['baseUrl' => '', 'priority' => TemplateManager::STYLE_SEQUENCE_CORE]);
+        $this->addScript('jQueryUI', $jqueryUI, ['baseUrl' => '', 'priority' => TemplateManager::STYLE_SEQUENCE_CORE]);
         $this->addScript('jQueryTagIt', $request->getBaseUrl() . '/lib/pkp/js/lib/jquery/plugins/jquery.tag-it.js', array('baseUrl' => ''));
 
         // Load Bootstrap

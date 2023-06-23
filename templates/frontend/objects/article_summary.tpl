@@ -15,16 +15,17 @@
  * @uses $primaryGenreIds array List of file genre ids for primary file types
  *}
 {assign var=smarty_version value=$smarty.version|substr:0:1}
+{assign var=publication value=$article->getCurrentPublication()}
 {assign var=articlePath value=$article->getBestArticleId($currentJournal)}
 {if (!$section.hideAuthor && $article->getHideAuthor() == $smarty.const.AUTHOR_TOC_DEFAULT) || $article->getHideAuthor() == $smarty.const.AUTHOR_TOC_SHOW}
   {assign var="showAuthor" value=true}
 {/if}
 
 <div class="article-summary media">
-  {if $article->getLocalizedCoverImage()}
+  {if $publication->getLocalizedData('coverImage')}
     <div class="cover media-left">
       <a href="{url page="article" op="view" path=$articlePath}" class="file">
-        <img class="media-object" src="{$article->getLocalizedCoverImageUrl()|escape}">
+        <img class="media-object" src="{$publication->getLocalizedCoverImageUrl($article->getData('contextId'))|escape}">
       </a>
     </div>
   {/if}
@@ -47,7 +48,7 @@
         <div class="meta">
           {if $showAuthor}
             <div class="authors">
-              {$article->getAuthorString()}
+              {$publication->getAuthorString($authorUserGroups)}
             </div>
           {/if}
         </div>
