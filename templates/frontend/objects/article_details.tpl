@@ -288,8 +288,7 @@
 								{$citation}
 							</div>
 							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-									aria-controls="cslCitationFormats">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 									{translate key="submission.howToCite.citationFormats"}
 									<span class="caret"></span>
 								</button>
