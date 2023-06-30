@@ -77,13 +77,17 @@
 				{/if}
 
 				{* DOI (requires plugin) *}
-				{* make compatible with ojs 3.1.2 *}
-				{if $smarty_version == '2'}
-					{include file="legacy/article_detail_doi_3.1.1.tpl"}
-				{else}
-					{include file="legacy/article_detail_doi_3.1.2.tpl"}
+				{assign var=doiObject value=$article->getCurrentPublication()->getData('doiObject')}
+				{if $doiObject}
+					{assign var="doiUrl" value=$doiObject->getData('resolvingUrl')|escape}
+					<div class="list-group-item doi">
+						{* <strong>{translate key="plugins.pubIds.doi.readerDisplayName"}</strong> *}
+						<span class="doi_logo"> </span>
+						<a class="doi_link" href="{$doiUrl}">
+							{$doiUrl}
+						</a>
+					</div>
 				{/if}
-				{* end compatible check *}
 			</div>
 
 
