@@ -40,28 +40,28 @@ jobs:
 
       - name: Create folder and removing .git and .github dir
         run: |
-          mkdir ./s3_upload
-          rsync -a ./ ./s3_upload/$REPO_NAME
-          rm -rf ./s3_upload/$REPO_NAME/.git*
-          rm -rf ./s3_upload/$REPO_NAME/s3_upload
+          mkdir ./academicFree
+          mkdir ./zipped
+          rsync -a ./ ./academicFree/$REPO_NAME
+          rm -rf ./academicFree/$REPO_NAME/.git*
+          rm -rf ./academicFree/$REPO_NAME/academicFree
 
       - name: Zip the repo and Pack to S3_Upload folder before uploading
         uses: vimtor/action-zip@v1
         with:
-          files: ./s3_upload
+          files: ./academicFree
           dest: ./zipped/${{steps.json_properties.outputs.name}}.zip
 
       # Copy the version.xml file to the zipped folder
       - name: Copy the version.xml file
         run: |
-          cp -p ./version.xml ./zipped/version.xml
-          [ -f ./CHANGELOG.md ] && cp -p ./CHANGELOG.md ./zipped/CHANGELOG.md
+          cp ./academicFree/academicFree/version.xml ./zipped/version.xml
 
       #everthing is working now, then upload
       - name: Upload Zip File to S3 Folder ( Version )
         uses: jakejarvis/s3-sync-action@master
         with:
-          args: --acl public-read --follow-symlinks --delete --include '*' --exclude './.git/*' --exclude './.github/*'  --exclude './.vscode/*' --exclude '.gitignore' --exclude './s3_upload/*' --exclude './.gitmodules'
+          args: --acl public-read --follow-symlinks --delete --include '*' --exclude './.git/*' --exclude './.github/*'  --exclude './.vscode/*' --exclude '.gitignore' --exclude './academicFree/*' --exclude './.gitmodules'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
