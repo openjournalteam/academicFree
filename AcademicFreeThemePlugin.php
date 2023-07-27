@@ -316,3 +316,7 @@ class AcademicFreeThemePlugin extends ThemePlugin
         $templateMgr->assign('themeTag', '<small class="pull-right" style="margin-top: 20px"> Academic Free Theme <br> by <a href="https://openjournaltheme.com"> openjournaltheme.com </a> </small>');
     }
 }
+
+if (!PKP_STRICT_MODE) {
+    class_alias('\APP\plugins\generic\ojtControlPanel\modules\academicFree\AcademicFreeThemePlugin', '\APP\plugins\themes\academicFree\AcademicFreeThemePlugin');
+}
