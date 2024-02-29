@@ -4,8 +4,8 @@
  * @file plugins/themes/academicFree/AcademicFreeThemePlugin.inc.php
  *
  * Copyright (c) 2024 openjournaltheme.com
- * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
- *
+ * Distributed under the GNU GPL v3. For full terms see the file README.
+ * No warranty is provided.
  */
 
 import('lib.pkp.classes.plugins.ThemePlugin');
