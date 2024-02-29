@@ -1,7 +1,11 @@
-### 3.3.0 - 7 September 2021
+### 3.3.1.0 - 29 February 2024
+- Fix glyphicon not properly loaded
+- Release to PKP Plugin Gallery 
+
+### 3.3.0.1 - 7 September 2021
 - Fix error on article summary when using subscription
 
-### 3.3 - 9 Februari 2021
+### 3.3.0.0 - 9 Februari 2021
 Compatible with OJS 3.3.X
 
 ### 3.2 - 27 April 2020
