@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file plugins/themes/default/AcademicFreeThemePlugin.inc.php
+ * @file plugins/themes/academicFree/AcademicFreeThemePlugin.inc.php
  *
  * Copyright (c) 2014-2017 Simon Fraser University Library
  * Copyright (c) 2003-2017 John Willinsky
@@ -75,8 +75,6 @@ class AcademicFreeThemePlugin extends ThemePlugin
      */
     public function init()
     {
-
-
         // Register option for bootstrap themes
         $this->addOption('bootstrapTheme', 'radio', array(
             'label'       => 'plugins.themes.academic_free.options.academicFree.label',

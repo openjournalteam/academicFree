@@ -1,11 +1,7 @@
 <?php
 
 /**
- * @defgroup plugins_themes_bootstrap3 Theme plugin for base Bootstrap 3 theme
- */
-
-/**
- * @file plugins/themes/default/index.php
+ * @file plugins/themes/academicFree/index.php
  *
  * Copyright (c) 2014-2017 Simon Fraser University Library
  * Copyright (c) 2003-2017 John Willinsky

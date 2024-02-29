@@ -14,7 +14,7 @@ For full terms see the file docs/COPYING.
   -->
 
 <version>
-  <application>academic_free</application>
+  <application>academicFree</application>
   <type>plugins.themes</type>
   <release>3.3.0.8</release>
   <date>2018-06-04</date>
