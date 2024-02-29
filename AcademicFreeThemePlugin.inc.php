@@ -1,20 +1,11 @@
 <?php
 
-/**
+ /**
  * @file plugins/themes/academicFree/AcademicFreeThemePlugin.inc.php
  *
- * Copyright (c) 2014-2017 Simon Fraser University Library
- * Copyright (c) 2003-2017 John Willinsky
- * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
+ * Copyright (c) 2024 openjournaltheme.com
+ * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
- * Modified by openjournaltheme.com
- * contact : openjournaltheme@gmail.com
- *
- *
- * @class AcademicFreeThemePlugin
- * @ingroup plugins_themes_bootstrap3
- *
- * @brief Default theme
  */
 
 import('lib.pkp.classes.plugins.ThemePlugin');
@@ -217,7 +208,7 @@ class AcademicFreeThemePlugin extends ThemePlugin
 
         // default style is paper
         $bootstrapTheme = $this->getOption('bootstrapTheme');
-        $this->addStyle('bootstrap', 'styles/yeti.less');
+        $this->addStyle('bootstrap', 'styles/yeti.less',  array('baseUrl' => $this->_getBaseUrl()));
 
         $locale = AppLocale::getLocale();
         if (AppLocale::getLocaleDirection($locale) === 'rtl') {
