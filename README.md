@@ -1,6 +1,6 @@
 # OpenJournal Theme
 
-Welcome to the OpenJournal Theme repository! The Academic Free theme is designed for use with the Open Journal Systems (OJS) platform, providing a clean and customizeable theme for your journal with Boostrap 3 theme. 
+Welcome to the OpenJournal Theme repository! The Academic Free theme is designed for use with the Open Journal Systems (OJS) platform, providing a clean and customizable theme for your journal with Boostrap 3 theme. 
 
 ## Requirement 
 OJS Minimum version 3.2
