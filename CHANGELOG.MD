@@ -1,3 +1,7 @@
+### 4.0.0.0 - 23 Juni 2023
+
+- Compatible with OJS 3.5.X
+
 ### 3.4.0.0 - 23 Juni 2023
 
 - Compatible with OJS 3.4.X
