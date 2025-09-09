@@ -25,7 +25,7 @@
 			{/if}
 			<li class="{$liClass|escape}{if $hasChildren} dropdown{/if}">
 				<a href="{$navigationMenuItemAssignment->navigationMenuItem->getUrl()}"{if $hasChildren} class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"{/if}>
-					{$navigationMenuItemAssignment->navigationMenuItem->getLocalizedTitle()}
+					{$navigationMenuItemAssignment->navigationMenuItem->getLocalizedData('title')}
 					{if $hasChildren}
 						<span class="caret"></span>
 					{/if}
@@ -36,7 +36,7 @@
 							{if $childNavigationMenuItemAssignment->navigationMenuItem->getIsDisplayed()}
 								<li class="{$liClass|escape}">
 									<a href="{$childNavigationMenuItemAssignment->navigationMenuItem->getUrl()}">
-										{$childNavigationMenuItemAssignment->navigationMenuItem->getLocalizedTitle()}
+										{$childNavigationMenuItemAssignment->navigationMenuItem->getLocalizedData('title')}
 									</a>
 								</li>
 							{/if}

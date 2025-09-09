@@ -14,11 +14,11 @@
  * @uses $primaryGalleys array List of article galleys that are not supplementary or dependent
  * @uses $supplementaryGalleys array List of article galleys that are supplementary
  *}
-{include file="frontend/components/header.tpl" isFullWidth=true  pageTitleTranslated=$article->getLocalizedTitle()|escape}
+{include file="frontend/components/header.tpl" isFullWidth=true  pageTitleTranslated=$article->getLocalizedData('title')|escape}
 
 <div class="page page_article">
 	{if $section}
-		{include file="frontend/components/breadcrumbs_article.tpl" currentTitle=$section->getLocalizedTitle()}
+		{include file="frontend/components/breadcrumbs_article.tpl" currentTitle=$section->getLocalizedData('title')}
 	{else}
 		{include file="frontend/components/breadcrumbs_article.tpl" currentTitleKey="article.article"}
 	{/if}

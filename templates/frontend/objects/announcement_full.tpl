@@ -14,7 +14,7 @@
 <article class="announcement-full">
 	<header class="page-header">
 		<h1>
-			{$announcement->getLocalizedTitle()}
+			{$announcement->getLocalizedData('title')}
 		</h1>
 		<small class="date">
 			<span class="glyphicon glyphicon-calendar"></span>

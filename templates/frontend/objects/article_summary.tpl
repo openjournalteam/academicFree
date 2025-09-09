@@ -16,8 +16,8 @@
  *}
 {assign var=smarty_version value=$smarty.version|substr:0:1}
 {assign var=publication value=$article->getCurrentPublication()}
-{assign var=articlePath value=$article->getBestArticleId($currentJournal)}
-{if (!$section.hideAuthor && $article->getHideAuthor() == $smarty.const.AUTHOR_TOC_DEFAULT) || $article->getHideAuthor() == $smarty.const.AUTHOR_TOC_SHOW}
+{assign var=articlePath value=$article->getBestId()}
+{if (!$section.hideAuthor && $publication->getData('hideAuthor') == $smarty.const.AUTHOR_TOC_DEFAULT) || $publication->getData('hideAuthor') == $smarty.const.AUTHOR_TOC_SHOW}
   {assign var="showAuthor" value=true}
 {/if}
 
@@ -33,16 +33,16 @@
   <div class="media-body">
     <h3 class="media-heading">
       <a href="{url page="article" op="view" path=$articlePath}">
-        {$article->getLocalizedTitle()|strip_unsafe_html}
-        {if $article->getLocalizedSubtitle()}
+        {$article->getLocalizedData('title')|strip_unsafe_html}
+        {if $article->getLocalizedData('subtitle')}
           <p>
-            <small>{$article->getLocalizedSubtitle()|escape}</small>
+            <small>{$article->getLocalizedData('subtitle')|escape}</small>
           </p>
         {/if}
       </a>
     </h3>
 
-    {if $showAuthor || $article->getPages()}
+    {if $showAuthor || $publication->getData('pages')}
 
       {if $showAuthor}
         <div class="meta">
@@ -55,9 +55,9 @@
       {/if}
 
       {* Page numbers for this article *}
-      {if $article->getPages()}
+      {if $publication->getData('pages')}
         <p class="pages">
-          {$article->getPages()|escape}
+          {$publication->getData('pages')|escape}
         </p>
       {/if}
 

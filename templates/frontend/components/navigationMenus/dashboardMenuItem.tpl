@@ -9,7 +9,7 @@
  *
  *}
 
-{$navigationMenuItem->getLocalizedTitle()|escape}
+{$navigationMenuItem->getLocalizedData('title')|escape}
 <span class="badge">
 	{$unreadNotificationCount}
 </span>
