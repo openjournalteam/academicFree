@@ -69,15 +69,15 @@
 			<div class="list-group">
 
 				{* Published date *}
-				{if $article->getDatePublished()}
+				{if $publication->getData('datePublished')}
 					<div class="list-group-item date-published">
 						<strong>{translate key="submissions.published"}</strong>
-						{$article->getDatePublished()|date_format}
+						{$publication->getData('datePublished')|date_format:$dateFormatLong}
 					</div>
 				{/if}
 
 				{* DOI (requires plugin) *}
-				{assign var=doiObject value=$article->getCurrentPublication()->getData('doiObject')}
+				{assign var=doiObject value=$publication->getData('doiObject')}
 				{if $doiObject}
 					{assign var="doiUrl" value=$doiObject->getData('resolvingUrl')|escape}
 					<div class="list-group-item doi">
@@ -152,10 +152,12 @@
 							<div class="author">
 								<i class="fa fa-user"> </i>
 								<strong>{$author->getFullName()|escape}</strong>
-								{if $author->getLocalizedAffiliation()}
-									<div class="article-author-affilitation">
-										{$author->getLocalizedAffiliation()|escape}
-									</div>
+								{if $author->getData('affiliations')}
+									{foreach from=$author->getData('affiliations') item=affiliation}
+										<div class="article-author-affilitation">
+											{$affiliation->getLocalizedData('name')|escape}
+										</div>
+									{/foreach}
 								{/if}
 								{if $author->getOrcid()}
 									<div class="orcid">
@@ -170,11 +172,11 @@
 				{/if}
 
 				{* Article abstract *}
-				{if $article->getLocalizedAbstract()}
+				{if $publication->getLocalizedData('abstract')}
 					<div class="article-summary" id="summary">
 						<h2>{translate key="article.abstract"}</h2>
 						<div class="article-abstract">
-							{$article->getLocalizedAbstract()|strip_unsafe_html|nl2br}
+							{$publication->getLocalizedData('abstract')|strip_unsafe_html|nl2br}
 						</div>
 					</div>
 				{/if}
@@ -204,13 +206,13 @@
 
 
 				{* Article Subject *}
-				{if $article->getLocalizedSubject()}
+				{if $publication->getLocalizedData('subject')}
 					<div class="panel panel-default subject">
 						<div class="panel-heading">
 							{translate key="article.subject"}
 						</div>
 						<div class="panel-body">
-							{$article->getLocalizedSubject()|escape}
+							{$publication->getLocalizedData('subject')|escape}
 						</div>
 					</div>
 				{/if}
@@ -263,10 +265,13 @@
 									<div class="media biography">
 										<div class="media-body">
 											<h3 class="media-heading biography-author">
-												{if $author->getLocalizedAffiliation()}
+												{if $author->getData('affiliations')}
 													{capture assign="authorName"}{$author->getFullName()|escape}{/capture}
-													{capture assign="authorAffiliation"}<span
-														class="affiliation">{$author->getLocalizedAffiliation()|escape}</span>{/capture}
+													{capture assign="authorAffiliation"}
+														{foreach from=$author->getData('affiliations') item=affiliation}
+															<span class="affiliation">{$affiliation->getLocalizedData('name')|escape}</span>
+														{/foreach}
+													{/capture}
 													{translate key="submission.authorWithAffiliation" name=$authorName affiliation=$authorAffiliation}
 												{else}
 													{$author->getFullName()|escape}
@@ -317,7 +322,7 @@
 				{call_hook name="Templates::Article::Details"}
 
 				{* References *}
-				{if $article->getCitations()}
+				{if $publication->getData('citationsRaw')}
 					<div class="article-references">
 						<h2><i class="fa fa-bookmark-o text-primary"> </i> {translate key="submission.citations"}</h2>
 						<div class="article-references-content">

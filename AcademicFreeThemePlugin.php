@@ -244,8 +244,9 @@ class AcademicFreeThemePlugin extends ThemePlugin
         $request = $this->getRequest();
 
         // Use OJS's built-in jQuery files
-        $jquery   = $request->getBaseUrl() . '/lib/pkp/lib/vendor/components/jquery/jquery' . $min . '.js';
-        $jqueryUI = $request->getBaseUrl() . '/lib/pkp/lib/vendor/components/jqueryui/jquery-ui' . $min . '.js';
+        $jquery   = $request->getBaseUrl() . '/js/build/jquery/jquery' . $min . '.js';
+        $jqueryUI = $request->getBaseUrl() . '/js/build/jquery-ui/jquery-ui' . $min . '.js';
+        
         // Use an empty `baseUrl` argument to prevent the theme from looking for
         // the files within the theme directory
         $this->addScript('jQuery', $jquery, ['baseUrl' => '', 'priority' => TemplateManager::STYLE_SEQUENCE_CORE]);
