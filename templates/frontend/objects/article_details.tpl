@@ -21,10 +21,10 @@
 <article class="article-details">
 	<header>
 		<h1 class="page-header">
-			{$article->getLocalizedData('title')|escape}
-			{if $article->getLocalizedData('subtitle')}
+			{$publication->getLocalizedData('title')|escape}
+			{if $publication->getLocalizedData('subtitle')}
 				<small>
-					{$article->getLocalizedData('subtitle')|escape}
+					{$publication->getLocalizedData('subtitle')|escape}
 					{if $section} <span class="pull-right">{translate key="section.section"}
 						{$section->getLocalizedData('title')|escape}</span> {/if}
 				</small>
