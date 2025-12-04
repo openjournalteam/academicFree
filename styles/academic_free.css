@@ -1,3 +1,53 @@
+/* FontAwesome Override icon */
+.fa,
+.fas,
+.far,
+.fal,
+.fab,
+.fad,
+[class^="fa-"],
+[class*=" fa-"] {
+  font-family: "FontAwesome" !important;
+}
+
+/* Override pseudo-elements using content Font Awesome */
+.fa::before,
+.fas::before,
+.far::before,
+.fal::before,
+.fab::before,
+.fad::before,
+[class^="fa-"]::before,
+[class*=" fa-"]::before,
+.fa::after,
+.fas::after,
+.far::after,
+.fal::after,
+.fab::after,
+.fad::after,
+[class^="fa-"]::after,
+[class*=" fa-"]::after {
+  font-family: "FontAwesome" !important;
+}
+
+.fas::before,
+.fa-solid::before {
+  font-family: "Font Awesome 5 Free", "Font Awesome 6 Free", "FontAwesome" !important;
+  font-weight: 900 !important;
+}
+
+.far::before,
+.fa-regular::before {
+  font-family: "Font Awesome 5 Free", "Font Awesome 6 Free", "FontAwesome" !important;
+  font-weight: 400 !important;
+}
+
+.fab::before,
+.fa-brands::before {
+  font-family: "Font Awesome 5 Brands", "Font Awesome 6 Brands", "FontAwesome" !important;
+}
+
+/*  */
 .no-padding {
     padding: 0px
 }

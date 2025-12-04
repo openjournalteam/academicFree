@@ -1,3 +1,7 @@
+### 3.3.1.2 - 4 December 2025
+- Fix duplicate site logo on footer
+- Add icon Font Awesome
+
 ### 3.3.1.0 - 29 February 2024
 - Fix glyphicon not properly loaded
 - Release to PKP Plugin Gallery 

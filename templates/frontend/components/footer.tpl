@@ -49,14 +49,14 @@
 
 			<div class="row">
 				
-				<div class="col-md-4">
-					{* Show site Logo *}
+			{* Show site Logo *}
+				{* <div class="col-md-4">
 					{if $displayPageHeaderLogo && is_array($displayPageHeaderLogo)}
-					<img style='width:100%; border="0"' src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" {if $displayPageHeaderLogo.altText != ''}alt="{$displayPageHeaderLogo.altText|escape}"{else}alt="{translate key="common.pageHeaderLogo.altText"}"{/if}>
+						<img style='width:100%; border="0"' src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" {if $displayPageHeaderLogo.altText != ''}alt="{$displayPageHeaderLogo.altText|escape}"{else}alt="{translate key="common.pageHeaderLogo.altText"}"{/if}>
 					{else}
 						<img  style='width:100%; border="1px solid #e5e5e5"; border-radius: 4px;' alt="site_logo" src="{$pluginImageDir}top_logo.jpg" /> 
 					{/if}
-				</div>
+				</div> *}
 				
 				{if $pageFooter}
 					{$pageFooter}	

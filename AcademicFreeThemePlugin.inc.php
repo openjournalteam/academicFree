@@ -240,6 +240,11 @@ class AcademicFreeThemePlugin extends ThemePlugin
 
         $this->addStyle('main', 'styles/academic_free.css');
         $this->addStyle('classy', 'styles/responsive.css');
+        $this->addStyle(
+			'fontAwesome',
+			$request->getBaseUrl() . '/lib/pkp/styles/fontawesome/fontawesome.css',
+			array('baseUrl' => '')
+		);
 
 
 
