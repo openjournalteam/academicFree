@@ -1,3 +1,7 @@
+### 3.4.0.1 - 09 April 2026
+
+- Fix error on article summary when using subscription
+
 ### 3.4.0.0 - 23 Juni 2023
 
 - Compatible with OJS 3.4.X

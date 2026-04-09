@@ -72,7 +72,7 @@
 				{if $article->getDatePublished()}
 					<div class="list-group-item date-published">
 						<strong>{translate key="submissions.published"}</strong>
-						{$article->getDatePublished()|date_format}
+						{$article->getDatePublished()|date_format:$dateFormatShort}
 					</div>
 				{/if}
 
