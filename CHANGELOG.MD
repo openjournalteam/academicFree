@@ -1,3 +1,8 @@
+### 4.0.0.1 - 4 September 2026
+
+- Fixed OJS 3.5 compatibility by removing the deprecated `import()` call.
+- Guarded article and breadcrumb issue links when an article has no assigned issue.
+
 ### 4.0.0.0 - 23 Juni 2023
 
 - Compatible with OJS 3.5.X

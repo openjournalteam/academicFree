@@ -45,7 +45,7 @@
 			<h2 class="sr-only">{translate key="plugins.themes.academic_pro.article.sidebar"}</h2>
 
 			{* Article/Issue cover image *}
-			{if $publication->getLocalizedData('coverImage') || $issue->getLocalizedCoverImage()}
+			{if $publication->getLocalizedData('coverImage') || ($issue && $issue->getLocalizedCoverImage())}
 				<div class="cover-image">
 					{assign var="coverImage" value=$publication->getLocalizedData('coverImage')}
 
@@ -135,12 +135,14 @@
 		<div class="col-md-8">
 			<section class="article-main">
 
-				{* Issue *}
+			{* Issue *}
+			{if $issue}
 				<div class="issue_detail">
 					<a class="title" href="{url page="issue" op="view" path=$issue->getBestIssueId($currentJournal)}">
 						{$issue->getIssueIdentification()}
 					</a>
 				</div>
+			{/if}
 
 
 				{* Screen-reader heading for easier navigation jumps *}

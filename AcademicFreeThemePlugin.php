@@ -65,7 +65,6 @@ class AcademicFreeThemePlugin extends ThemePlugin
 
     public function getPluginVersion()
     {
-        import('lib.pkp.classes.site.VersionCheck');
         $version = VersionCheck::parseVersionXML($this->getPluginVersionFile());
 
         return $version['release'];
