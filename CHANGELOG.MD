@@ -1,3 +1,7 @@
+### 4.0.0.3 - 8 October 2026
+
+- Fixed announcement detail breadcrumbs styling to align with theme breadcrumb layout.
+
 ### 4.0.0.2 - 8 October 2026
 
 - Fixed announcement detail rendering for OJS 3.5 by using the current Announcement model API.
