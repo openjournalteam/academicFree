@@ -18,14 +18,14 @@
 		</h1>
 		<small class="date">
 			<span class="glyphicon glyphicon-calendar"></span>
-			{translate key="announcement.postedOn" postDate=$announcement->getDatePosted()}
+			{$announcement->datePosted->format($dateFormatShort)}
 		</small>
 	</header>
 	<div class="description">
-		{if $announcement->getLocalizedDescription()}
-			{$announcement->getLocalizedDescription()|strip_unsafe_html}
-		{else}
-			{$announcement->getLocalizedDescriptionShort()|strip_unsafe_html}
+			{if $announcement->getLocalizedData('description')}
+				{$announcement->getLocalizedData('description')|strip_unsafe_html}
+			{else}
+				{$announcement->getLocalizedData('descriptionShort')|strip_unsafe_html}
 		{/if}
 	</div>
 </article><!-- .announcement-full" -->

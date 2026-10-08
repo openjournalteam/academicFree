@@ -1,3 +1,7 @@
+### 4.0.0.2 - 8 October 2026
+
+- Fixed announcement detail rendering for OJS 3.5 by using the current Announcement model API.
+
 ### 4.0.0.1 - 4 September 2026
 
 - Fixed OJS 3.5 compatibility by removing the deprecated `import()` call.
