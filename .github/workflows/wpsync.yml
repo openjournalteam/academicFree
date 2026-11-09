@@ -36,8 +36,10 @@ jobs:
 
     - name: Construct URL
       id: construct_url
+      env:
+        OJT_API_KEY: ${{ secrets.OJT_API_KEY }}
       run: |
-        url="https://openjournaltheme.com/wp-json/openjournalvalidation/v3/product/update-version?key=g4Tj9qL2xWz8RkD1s&version=${{ steps.extract_version.outputs.version }}&min_version=${{ steps['branch-name'].outputs.current_branch }}&class=${{ steps.extract_version.outputs.class }}"
+        url="https://openjournaltheme.com/wp-json/openjournalvalidation/v3/product/update-version?key=${OJT_API_KEY}&version=${{ steps.extract_version.outputs.version }}&min_version=${{ steps['branch-name'].outputs.current_branch }}&class=${{ steps.extract_version.outputs.class }}"
         echo "url=$url" >> $GITHUB_OUTPUT
 
     - name: Curl to WordPress site
