@@ -18,7 +18,7 @@
 		</h2>
 		<p class="date">
 			<span class="glyphicon glyphicon-calendar"></span>
-			{$announcement->datePosted->format($dateFormatShort)}
+			{if $announcement->datePosted}{$announcement->datePosted->format($dateFormatShort)}{/if}
 		</p>
 		{$announcement->getLocalizedData('descriptionShort')|strip_unsafe_html}
 	</div>

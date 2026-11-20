@@ -1,3 +1,9 @@
+### 4.0.0.4 - 20 November 2026
+
+- Fixed keywords, author affiliations (including ROR), galley links and article page title on OJS 3.5.
+- Fixed self-registration roles, per-journal privacy consent and announcement dates on OJS 3.5.
+- Registered the Smarty functions and classes the templates need on OJS 3.5.
+
 ### 4.0.0.3 - 8 October 2026
 
 - Fixed announcement detail breadcrumbs styling to align with theme breadcrumb layout.

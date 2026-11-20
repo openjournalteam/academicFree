@@ -1,4 +1,4 @@
-	{if $numAnnouncementsHomepage && $announcements|count}
+	{if $numAnnouncementsHomepage && isset($announcements) && $announcements|count}
 		<div class="col-md-12">
 		<section class="cmp_announcements media">
 			<header class="page-header">

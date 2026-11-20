@@ -154,10 +154,10 @@
 							<div class="author">
 								<i class="fa fa-user"> </i>
 								<strong>{$author->getFullName()|escape}</strong>
-								{if $author->getData('affiliations')}
-									{foreach from=$author->getData('affiliations') item=affiliation}
+								{if $author->getAffiliations()}
+									{foreach from=$author->getAffiliations() item=affiliation}
 										<div class="article-author-affilitation">
-											{$affiliation->getLocalizedData('name')|escape}
+											{$affiliation->getLocalizedName()|escape}{if $affiliation->getRor()} <a href="{$affiliation->getRor()|escape}">{$affiliation->getRor()|escape}</a>{/if}
 										</div>
 									{/foreach}
 								{/if}
@@ -184,7 +184,16 @@
 				{/if}
 
 				{* Keywords *}
-				{* @todo keywords not yet implemented *}
+				{if !empty($publication->getLocalizedData('keywords'))}
+					<div class="panel panel-default keywords">
+						<div class="panel-heading">{translate key="article.subject"}</div>
+						<div class="panel-body">
+							{foreach name="keywords" from=$publication->getLocalizedData('keywords') item="keyword"}
+								{$keyword.name|escape}{if !$smarty.foreach.keywords.last}{translate key="common.commaListSeparator"}{/if}
+							{/foreach}
+						</div>
+					</div>
+				{/if}
 
 
 
@@ -267,11 +276,11 @@
 									<div class="media biography">
 										<div class="media-body">
 											<h3 class="media-heading biography-author">
-												{if $author->getData('affiliations')}
+													{if $author->getAffiliations()}
 													{capture assign="authorName"}{$author->getFullName()|escape}{/capture}
 													{capture assign="authorAffiliation"}
-														{foreach from=$author->getData('affiliations') item=affiliation}
-															<span class="affiliation">{$affiliation->getLocalizedData('name')|escape}</span>
+														{foreach from=$author->getAffiliations() item=affiliation}
+															<span class="affiliation">{$affiliation->getLocalizedName()|escape}</span>
 														{/foreach}
 													{/capture}
 													{translate key="submission.authorWithAffiliation" name=$authorName affiliation=$authorAffiliation}
