@@ -9,6 +9,8 @@
 *}
 {include file="frontend/components/header.tpl" pageTitle="user.register"}
 
+{assign var="siteContextId" value=PKP\core\PKPApplication::SITE_CONTEXT_ID|intval}
+
 <div id="main-content" class="page page_register">
 
 	{include file="frontend/components/breadcrumbs.tpl" currentTitleKey="user.register"}
@@ -28,14 +30,16 @@
 		{if $currentContext}
 
 			<fieldset class="consent">
-				{* Require the user to agree to the terms of the privacy policy *}
-				<div class="form-group optin optin-privacy">
-					<label>
-						<input type="checkbox" name="privacyConsent" value="1"{if $privacyConsent} checked="checked"{/if}>
-						{capture assign="privacyUrl"}{url router=$smarty.const.ROUTE_PAGE page="about" op="privacy"}{/capture}
-						{translate key="user.register.form.privacyConsent" privacyUrl=$privacyUrl}
-					</label>
-				</div>
+				{if $currentContext->getData('privacyStatement')}
+					{* Require the user to agree to the terms of the privacy policy *}
+					<div class="form-group optin optin-privacy">
+						<label>
+							<input type="checkbox" name="privacyConsent" value="1"{if $privacyConsent} checked="checked"{/if}>
+							{capture assign="privacyUrl"}{url router=$smarty.const.ROUTE_PAGE page="about" op="privacy"}{/capture}
+							{translate key="user.register.form.privacyConsent" privacyUrl=$privacyUrl}
+						</label>
+					</div>
+				{/if}
 				{* Ask the user to opt into public email notifications *}
 				<div class="form-group optin optin-email">
 					<label>
@@ -49,7 +53,7 @@
 			{assign var=contextId value=$currentContext->getId()}
 			{assign var=userCanRegisterReviewer value=0}
 			{foreach from=$reviewerUserGroups[$contextId] item=userGroup}
-				{if $userGroup->getPermitSelfRegistration()}
+				{if $userGroup->permitSelfRegistration}
 					{assign var=userCanRegisterReviewer value=$userCanRegisterReviewer+1}
 				{/if}
 			{/foreach}
@@ -61,14 +65,20 @@
 					<div class="fields">
 						<div id="reviewerOptinGroup" class="form-group optin">
 							{foreach from=$reviewerUserGroups[$contextId] item=userGroup}
-								{if $userGroup->getPermitSelfRegistration()}
+								{if $userGroup->permitSelfRegistration}
 									<label>
-										{assign var="userGroupId" value=$userGroup->getId()}
+										{assign var="userGroupId" value=$userGroup->id}
 										<input type="checkbox" name="reviewerGroup[{$userGroupId}]" value="1"{if in_array($userGroupId, $userGroupIds)} checked="checked"{/if}>
-										{translate key="user.reviewerPrompt.userGroup" userGroup=$userGroup->getLocalizedName()}
+										{translate key="user.reviewerPrompt.userGroup" userGroup=$userGroup->getLocalizedData('name')}
 									</label>
 								{/if}
 							{/foreach}
+						</div>
+						<div id="reviewerInterests" class="reviewer_interests">
+							<label>
+								<span class="label">{translate key="user.interests"}</span>
+								<input type="text" name="interests" id="interests" value="{$interests|default:""|escape}">
+							</label>
 						</div>
 					</div>
 				</fieldset>
@@ -77,6 +87,33 @@
 
 		{include file="frontend/components/registrationFormContexts.tpl"}
 
+		{if !$currentContext}
+			<div class="fields">
+				<div class="reviewer_nocontext_interests">
+					<label>
+						<span class="label">{translate key="user.register.noContextReviewerInterests"}</span>
+						<input type="text" name="interests" id="interests" value="{$interests|default:""|escape}">
+					</label>
+				</div>
+			</div>
+			{if $siteWidePrivacyStatement}
+				<div class="fields">
+					<div class="optin optin-privacy">
+						<label>
+							<input type="checkbox" name="privacyConsent[{$siteContextId}]" id="privacyConsent[{$siteContextId}]" value="1"{if $privacyConsent[$siteContextId]} checked="checked"{/if}>
+							{capture assign="privacyUrl"}{url router=$smarty.const.ROUTE_PAGE page="about" op="privacy"}{/capture}
+							{translate key="user.register.form.privacyConsent" privacyUrl=$privacyUrl}
+						</label>
+					</div>
+				</div>
+			{/if}
+			<div class="fields">
+				<div class="optin optin-email">
+					<label><input type="checkbox" name="emailConsent" value="1"{if $emailConsent} checked="checked"{/if}>{translate key="user.register.form.emailConsent"}</label>
+				</div>
+			</div>
+		{/if}
+
 		{* recaptcha spam blocker *}
 		{if $reCaptchaHtml}
 			<fieldset class="recaptcha_wrapper">
@@ -84,6 +121,14 @@
 					<div class="form-group recaptcha">
 						{$reCaptchaHtml}
 					</div>
+				</div>
+			</fieldset>
+		{/if}
+
+		{if $altchaEnabled}
+			<fieldset class="altcha_wrapper">
+				<div class="fields">
+					<altcha-widget challengejson='{$altchaChallenge|@json_encode}' floating></altcha-widget>
 				</div>
 			</fieldset>
 		{/if}

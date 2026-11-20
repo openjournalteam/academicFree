@@ -306,6 +306,12 @@ class AcademicFreeThemePlugin extends ThemePlugin
         // Retrieve the TemplateManager
         $templateMgr = $args[0];
 
+        if (!isset($templateMgr->registered_plugins['modifier']['is_string'])) {
+            $templateMgr->registerPlugin('modifier', 'is_string', 'is_string');
+        }
+        $templateMgr->registerClass('APP\\journal\\Journal', 'APP\\journal\\Journal');
+        $templateMgr->registerClass('\\APP\\journal\\Journal', 'APP\\journal\\Journal');
+
         $baseUrl = Config::getVar('general', 'base_url');
 
         // Attach a custom piece of data to the TemplateManager

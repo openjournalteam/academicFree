@@ -31,6 +31,7 @@
 				<ul class="list-group contexts">
 					{foreach from=$contexts item=context}
 						{assign var=contextId value=$context->getId()}
+						{assign var=isSelected value=false}
 						<li class="list-group-item context">
 							<h4 class="list-group-item-heading">
 								{$context->getLocalizedName()}
@@ -41,45 +42,57 @@
 							<div class="form-inline">
 								<div class="form-group context_roles">
 									{foreach from=$readerUserGroups[$contextId] item=userGroup}
-										{if $userGroup->getPermitSelfRegistration()}
-											{assign var="userGroupId" value=$userGroup->getId()}
+										{if $userGroup->permitSelfRegistration}
+											{assign var="userGroupId" value=$userGroup->id}
 											<label class="input-group">
 												<span class="input-group-addon">
 													<input type="checkbox" name="readerGroup[{$userGroupId}]"{if in_array($userGroupId, $userGroupIds)} checked="checked"{/if}>
 												</span>
 												<span class="form-control">
-													{$userGroup->getLocalizedName()}
+													{$userGroup->getLocalizedData('name')}
 												</span>
 											</label>
+													{if in_array($userGroupId, $userGroupIds)}{assign var=isSelected value=true}{/if}
 										{/if}
 									{/foreach}
 									{foreach from=$authorUserGroups[$contextId] item=userGroup}
-										{if $userGroup->getPermitSelfRegistration()}
-											{assign var="userGroupId" value=$userGroup->getId()}
+										{if $userGroup->permitSelfRegistration}
+											{assign var="userGroupId" value=$userGroup->id}
 											<label class="input-group">
 												<span class="input-group-addon">
 													<input type="checkbox" name="authorGroup[{$userGroupId}]"{if in_array($userGroupId, $userGroupIds)} checked="checked"{/if}>
 												</span>
 												<span class="form-control">
-													{$userGroup->getLocalizedName()}
+													{$userGroup->getLocalizedData('name')}
 												</span>
 											</label>
+													{if in_array($userGroupId, $userGroupIds)}{assign var=isSelected value=true}{/if}
 										{/if}
 									{/foreach}
 									{foreach from=$reviewerUserGroups[$contextId] item=userGroup}
-										{if $userGroup->getPermitSelfRegistration()}
-											{assign var="userGroupId" value=$userGroup->getId()}
+										{if $userGroup->permitSelfRegistration}
+											{assign var="userGroupId" value=$userGroup->id}
 											<label class="input-group">
 												<span class="input-group-addon">
 													<input type="checkbox" name="reviewerGroup[{$userGroupId}]"{if in_array($userGroupId, $userGroupIds)} checked="checked"{/if}>
 												</span>
 												<span class="form-control">
-													{$userGroup->getLocalizedName()}
+													{$userGroup->getLocalizedData('name')}
 												</span>
 											</label>
+													{if in_array($userGroupId, $userGroupIds)}{assign var=isSelected value=true}{/if}
 										{/if}
 									{/foreach}
 								</div>
+								{if !$enableSiteWidePrivacyStatement && $context->getData('privacyStatement')}
+									<div class="context_privacy {if $isSelected}context_privacy_visible{/if}">
+										<label>
+											<input type="checkbox" name="privacyConsent[{$contextId}]" id="privacyConsent[{$contextId}]" value="1"{if $privacyConsent[$contextId]} checked="checked"{/if}>
+											{capture assign="privacyUrl"}{url router=PKP\core\PKPApplication::ROUTE_PAGE context=$context->getPath() page="about" op="privacy"}{/capture}
+											{translate key="user.register.form.privacyConsentThisContext" privacyUrl=$privacyUrl}
+										</label>
+									</div>
+								{/if}
 							</div>
 						</li>
 					{/foreach}

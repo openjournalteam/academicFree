@@ -18,7 +18,7 @@
 		</h1>
 		<small class="date">
 			<span class="glyphicon glyphicon-calendar"></span>
-			{$announcement->datePosted->format($dateFormatShort)}
+			{if $announcement->datePosted}{$announcement->datePosted->format($dateFormatShort)}{/if}
 		</small>
 	</header>
 	<div class="description">

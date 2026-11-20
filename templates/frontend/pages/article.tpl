@@ -14,7 +14,7 @@
  * @uses $primaryGalleys array List of article galleys that are not supplementary or dependent
  * @uses $supplementaryGalleys array List of article galleys that are supplementary
  *}
-{include file="frontend/components/header.tpl" isFullWidth=true  pageTitleTranslated=$article->getLocalizedData('title')|escape}
+{include file="frontend/components/header.tpl" isFullWidth=true pageTitleTranslated=$publication->getLocalizedFullTitle(null, 'html')|strip_unsafe_html}
 
 <div class="page page_article">
 	{if $section}
