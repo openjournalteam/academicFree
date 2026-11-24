@@ -46,6 +46,7 @@ class AcademicFreeThemePlugin extends ThemePlugin
             return true;
         }
         Hook::add('TemplateManager::display', array($this, 'loadTemplateData'));
+        Hook::add('TemplateManager::display', [$this, 'addCanonicalLinkHeader']);
         Hook::add('TemplateManager::display', [$this, 'addHeaderMeta']);
 
         return true;
@@ -320,6 +321,98 @@ class AcademicFreeThemePlugin extends ThemePlugin
         $templateMgr->assign('pluginDir', $this->getPluginPath());
         $templateMgr->assign('pluginImageDir', $baseUrl . '/' . $this->getPluginPath() . '/images/');
         $templateMgr->assign('themeTag', '<small class="pull-right" style="margin-top: 20px"> Academic Free Theme <br> by <a href="https://openjournaltheme.com"> openjournaltheme.com </a> </small>');
+    }
+
+    /**
+     * Add <link rel="canonical"> to pages that exist under more than one URL:
+     * article/view/ID and article/view/ID/0, issue/view/ID and issue/view/ID/0,
+     * and the journal homepage with or without "/index". Without a canonical,
+     * Google Scholar and Search Console list these URLs as duplicates.
+     *
+     * Adds nothing when the page already declares a canonical (for example the
+     * core one for outdated article versions), so the tag is never doubled.
+     * Galley, version and all other URLs are left untouched.
+     *
+     * @param string $hookName TemplateManager::display
+     * @param array $args First item is the TemplateManager
+     * @return bool false, so other handlers of the hook still run
+     */
+    public function addCanonicalLinkHeader($hookName, $args)
+    {
+        $templateMgr = isset($args[0]) ? $args[0] : null;
+        $request = \APP\core\Application::get()->getRequest();
+        if (!is_object($templateMgr) || !is_object($request) || !$request->getContext()) {
+            return false;
+        }
+
+        $page = (string) $request->getRequestedPage();
+        $op = (string) $request->getRequestedOp();
+        $path = array_map('strval', (array) $request->getRequestedArgs());
+        $isIdOrIdZero = count($path) === 1 || (count($path) === 2 && $path[1] === '0');
+
+        $url = null;
+        if ($page === 'article' && $op === 'view' && $isIdOrIdZero) {
+            $article = $templateMgr->getTemplateVars('article');
+            if (is_object($article) && method_exists($article, 'getBestId')) {
+                $url = $request->url(null, 'article', 'view', [$article->getBestId()]);
+            }
+        } elseif ($page === 'issue' && $op === 'view' && $isIdOrIdZero) {
+            $issue = $templateMgr->getTemplateVars('issue');
+            if (is_object($issue) && method_exists($issue, 'getBestIssueId')) {
+                $url = $request->url(null, 'issue', 'view', [$issue->getBestIssueId()]);
+            }
+        } elseif (($page === '' || $page === 'index') && ($op === '' || $op === 'index') && !$path) {
+            $url = $request->url($request->getContext()->getPath());
+        }
+
+        if (!$url || $this->templateHasCanonicalHeader($templateMgr)) {
+            return false;
+        }
+
+        $templateMgr->addHeader(
+            'canonical',
+            '<link rel="canonical" href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '">'
+        );
+        return false;
+    }
+
+    /**
+     * Whether a canonical link was already added to the page headers.
+     * TemplateManager keeps them in a private array without a getter, so read
+     * it by reflection. If that fails, report false: addHeader() is keyed by
+     * name, so adding 'canonical' again replaces the same entry, never doubles.
+     *
+     * @param object $templateMgr
+     * @return bool
+     */
+    private function templateHasCanonicalHeader($templateMgr)
+    {
+        try {
+            $class = new \ReflectionClass($templateMgr);
+            while ($class && !$class->hasProperty('_htmlHeaders')) {
+                $class = $class->getParentClass();
+            }
+            if (!$class) {
+                return false;
+            }
+            $property = $class->getProperty('_htmlHeaders');
+            if (PHP_VERSION_ID < 80100) {
+                $property->setAccessible(true);
+            }
+            foreach ((array) $property->getValue($templateMgr) as $byPriority) {
+                foreach ((array) $byPriority as $named) {
+                    foreach ((array) $named as $entry) {
+                        $header = isset($entry['header']) ? (string) $entry['header'] : '';
+                        if (preg_match('/rel\s*=\s*["\']canonical["\']/i', $header)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            return false;
+        }
+        return false;
     }
 }
 
