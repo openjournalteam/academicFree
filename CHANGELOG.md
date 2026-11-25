@@ -1,3 +1,6 @@
+### 3.3.1.3 - 25 November 2026
+- Added a canonical link to article, issue and journal home pages that can be opened under more than one URL (article/view/ID/0, issue/view/ID/0 and /index), so Google Scholar and Search Console no longer list them as duplicates.
+
 ### 3.3.1.2 - 4 December 2025
 - Fix duplicate site logo on footer
 - Add icon Font Awesome
