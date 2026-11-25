@@ -1,3 +1,6 @@
+### 3.4.0.2 - 25 November 2026
+- Added a canonical link to article, issue and journal home pages that can be opened under more than one URL (article/view/ID/0, issue/view/ID/0 and /index), so Google Scholar and Search Console no longer list them as duplicates.
+
 ### 3.4.0.1 - 09 April 2026
 
 - Fix error on article summary when using subscription
