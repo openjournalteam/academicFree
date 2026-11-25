@@ -1,3 +1,6 @@
+### 4.0.0.5 - 25 November 2026
+- Added a canonical link to article, issue and journal home pages that can be opened under more than one URL (article/view/ID/0, issue/view/ID/0 and /index), so Google Scholar and Search Console no longer list them as duplicates.
+
 ### 4.0.0.4 - 20 November 2026
 
 - Fixed keywords, author affiliations (including ROR), galley links and article page title on OJS 3.5.
